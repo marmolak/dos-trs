@@ -4,9 +4,8 @@ SEGMENT .text
 org 100h
 
 ; resident part
-    jmp setup ; will be patched
-    mov cx, 10
-    mov ah, 02h
+    jmp setup ; will be patched by next line
+;    mov ah, 02h
     mov dx, 64;
     int 21h
     mov ax, 4c00h
@@ -15,8 +14,8 @@ org 100h
 ; end resident part
 
 setup:
-; patch jmp part by nops
-    mov word [100h], 9090h
+; patch jmp part by mov ah, 02h
+    mov word [100h], 0x02b4
 
 ; clean cpu cache
     wbinvd
