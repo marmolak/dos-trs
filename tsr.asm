@@ -4,25 +4,25 @@ SEGMENT .text
 org 100h
 
 ; resident part
-    jmp setup ; will be patched by next line
-;    mov ah, 02h
-    mov dx, 64;
+    jmp setup ; such a waste of bytes!
+    mychar: db '1'
+tsr:
+    push ds
+    push cs
+    pop ds
+    mov ah, 02h
+    mov dx, mychar;
     int 21h
     mov ax, 4c00h
     int 21h
+    pop ds
     iret
 ; end resident part
 
 setup:
-; patch jmp part by mov ah, 02h
-    mov word [100h], 0x02b4
-
-; clean cpu cache
-    wbinvd
-
 ; install handler
     mov ax, 2500h
-    mov dx, 100h
+    mov dx, tsr
     int 21h
 
 ; TSR
